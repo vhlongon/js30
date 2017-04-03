@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+    <meta charset="UTF-8">
+    <title>Key Detection</title>
+    <script type="text/javascript" src="http://www.cornify.com/js/cornify.js"></script>
+    </head>
+    <body>
+    <script>
+    function sequenceDetector(secretSequence, action = () => {}) {
+        let state = [];
+
+        const generateState = (state = [], key) => [...state, key];
+        // set the currenct sequence length to be no more than the lenght of the secret sequence
+        const setSequenceLimit = (press, secret) => press.slice(-secret.length); 
+        const checkSequence = (state, sequence) => 
+            (state.filter((key, i) => 
+                key === sequence[i])).length === sequence.length;
+
+        const onKeyPressed = ({key}) => {
+            // generate the new current state 
+            state = setSequenceLimit(generateState(state, key), secretSequence);
+            checkSequence(state, secretSequence) && action();
+        }
+
+        window.addEventListener('keyup', onKeyPressed);
+    }
+    
+
+    const test = sequenceDetector(
+        ['ArrowDown', 'ArrowRight', 'a'], 
+        () => console.log('%c Bingo!', 'font-size: 24px; color: white; background: green')
+    );
+        
+    </script>
+    </body>
+</html>

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Type Ahead 👀</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <form class="search-form">
+    <input type="text" class="search" placeholder="City or State">
+    <ul class="suggestions">
+      <li>Filter for a city</li>
+      <li>or a state</li>
+    </ul>
+  </form>
+<script>
+const endpoint = 'https://gist.githubusercontent.com/Miserlou/c5cd8364bf9b2420bb29/raw/2bf258763cdddd704f8ffd3ea9a3e81d25e2c6f6/cities.json';
+const citiesData = []
+
+// the fetch api returns first a promise containing a blob of raw data
+// so we can .json on it, which in turn returns another promise
+// that second promise return the correct formated json data  
+fetch(endpoint)
+    .then(res => res.json())
+    .then(data => citiesData.push(...data));
+
+
+const search = document.querySelector('.search');
+const suggestions = document.querySelector('.suggestions');
+
+const findMatches = (wordToMatch, cities) => wordToMatch ? 
+    cities.filter(({city, state}) => (city.includes(wordToMatch) || state.includes(wordToMatch))) : [];
+
+const generateHtml = node => ({target: {value}}) => {
+    const html = findMatches(value, citiesData)
+        .map(({city, state, population}) => (`
+            <li>
+                <span class="name">
+                    <span>${city.replace(value, `<span class="hl">${value}</span>`)}</span>, 
+                    <span>${state.replace(value, `<span class="hl">${value}</span>`)}</span>
+                </span>
+                <span class="population">${population}</span>
+            </li>
+        `)).join('');
+    node.innerHTML = html;
+    return node;
+}
+
+search.addEventListener('keyup', generateHtml(suggestions));
+
+</script>
+  </body>
+</html>

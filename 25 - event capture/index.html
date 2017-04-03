@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Understanding JavaScript's Capture</title>
+</head>
+
+<body class="bod">
+
+    <div class="one">
+        <div class="two">
+            <div class="three">
+            </div>
+        </div>
+    </div>
+
+    <style>
+        html {
+            box-sizing: border-box;
+        }
+        
+        *,
+        *:before,
+        *:after {
+            box-sizing: inherit;
+        }
+        
+        div {
+            width: 100%;
+            padding: 100px;
+        }
+        
+        .one {
+            background: thistle;
+        }
+        
+        .two {
+            background: mistyrose;
+        }
+        
+        .three {
+            background: coral;
+        }
+    </style>
+
+    <button></button>
+    <script>
+        const divs = document.querySelectorAll('div');
+
+        function bottomToTop (e) {
+            console.log('bottom to top');
+            console.log(this);
+        }
+
+        function topToBottom (e) {
+            console.log('top to bottom');
+            console.log(this);
+        }
+
+        function doNotBubble(e) {
+            // stop bubbling either take the outer most if capture is false
+            // or the inner fist if capture is true
+            e.stopPropagation();
+            console.log(e);
+            console.log('stop on the first element');
+            console.log(this);
+        }
+
+        function onOnce(e) {
+            console.log('run once and unbind itself');
+            console.log(this);
+        }
+
+        // the concept of bubling works as following:
+        // when trigging an event the browser captures the elements affected going from top to bottom (outer most to inner most)
+        // then it will bubble back upwards (from inner most to outer most), the bubbling is what is decided the other of elements triggered
+        // but if you set the `capture` option to true it will trigger from top to bottom, the default is false (going from bottom to top)
+        // divs.forEach(div => div.addEventListener('click', bottomToTop));
+
+
+        // divs.forEach(div => div.addEventListener('click', topToBottom, {
+        //     capture: true
+        // }));
+
+
+        divs.forEach(div => div.addEventListener('click', doNotBubble));
+
+        // will trigger the event once and then unbind itself
+        //divs.forEach(div => div.addEventListener('click', onOnce, {once: true}));
+
+
+    </script>
+</body>
+
+</html>

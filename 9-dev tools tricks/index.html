@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Console Tricks!</title>
+</head>
+<body>
+
+  <p onClick="makeGreen()">×BREAK×DOWN×</p>
+
+  <script>
+    // right-click on the element on devtools -> break on... -> attributes modifications
+    // this is add a debugger breakpoint to the line of js that is causing the element to be modified
+    const dogs = [{ name: 'Snickers', age: 2 }, { name: 'hugo', age: 8 }];
+    function makeGreen() {
+      const p = document.querySelector('p');
+      p.style.color = '#BADA55';
+      p.style.fontSize = '50px';
+      debugger
+    }
+    // Regular
+    console.log('normal');
+
+    // Interpolated
+    // but ES6 ` ` is a better approach though
+    console.log('Hi, I am %s', 'Victor');
+    
+    // Styled
+    console.log('%c I am a styled console log', 'font-size: 24px; color: black; background: gold');
+
+    // warning!
+    console.warn('Ohhhh noooo');
+
+    // Error :|
+    console.warn('I am an error display');
+
+    // Info
+    console.info('crocodiles eat 3-4 people per year');
+
+    // Testing
+    // will only fire if the assumption is false
+    console.assert(1 !== 1, '1 is equal to 1');
+
+    // clearing
+    //console.clear();
+
+    // Viewing DOM Elements
+    // this make sure you check all propertis and methods a node has
+    const p = document.querySelector('p');
+    console.dir(p);
+
+    // Grouping together
+    dogs.forEach(dog => {
+            // or only .group (will have the group item open by default) 
+        console.groupCollapsed(`${dog.name}`);
+        console.log(`This is ${dog.name}`);
+        console.log(`${dog.name} is ${dog.age} years old`);
+        console.log(`${dog.name} is ${dog.age * 7} dog years old`);
+        console.groupEnd(`${dog.name}`);
+    });
+    // counting
+    console.count('one');
+    console.count('one');
+    console.count('one');
+    console.count('two');
+    console.count('two');
+    console.count('two');
+    console.count('one');
+    console.count('two');
+    console.count('one');
+    console.count('one');
+    console.count('two');
+
+    // timing
+    console.time('fetching data');
+    fetch('https://api.github.com/users/vhlongon')
+        .then(data => data.json())
+        .then(data => {
+            console.info(data);
+            console.timeEnd('fetching data');
+        })
+
+    // table
+    //take an array of objects and if they have the same props it will be displayed as table
+    console.table(dogs);
+  </script>
+</body>
+</html>

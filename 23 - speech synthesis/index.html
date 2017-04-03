@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Speech Synthesis</title>
+    <link href='https://fonts.googleapis.com/css?family=Pacifico' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <div class="voiceinator">
+
+        <h1>The Voiceinator <br> 5000-II</h1>
+
+        <select name="voice" id="voices">
+        <option value="">Select A Voice</option>
+      </select>
+
+        <label for="rate">Rate:</label>
+        <input name="rate" type="range" min="0" max="3" value="1" step="0.1">
+
+        <label for="pitch">Pitch:</label>
+
+        <input name="pitch" type="range" min="0" max="2" step="0.1">
+        <textarea name="text">Martin Krafft is totally awesome</textarea>
+        <button id="stop">Stop!</button>
+        <button id="speak">Speak</button>
+
+    </div>
+
+    <script>
+
+        function voiceinator(el) {
+            const msg = new SpeechSynthesisUtterance();
+            const speech = speechSynthesis;
+            const voicesDropdown = el.querySelector('[name="voice"]');
+            const options = el.querySelectorAll('[type="range"], [name="text"]');
+            const speakButton = el.querySelector('#speak');
+            const stopButton = el.querySelector('#stop');
+            msg.text = el.querySelector('[name="text"]').value;
+
+            // Pure
+            const getVoices = speech => speech.getVoices();
+            const getNewVoice = (voices, voice) => voices.find(({name}) => name === voice);
+            const generateVoiceOptions = speech => 
+                getVoices(speech)
+                    .map(({name, lang}) => 
+                        `<option value="${name}">${name} ${lang || ''}</option>`)
+                    .join('');
+            
+
+            // Have side effects
+            const speak = (msg, speech) => {
+                speech.cancel();
+                speech.speak(msg);
+                return speech;
+            }
+            const stopSpeech = speech => {
+                speech.cancel();
+                return speech;
+            }
+
+            // Event callbacks handlers, have side-effects 
+            // but the altered objects are taken as parameters
+            const onVoiceChange = msg => ({target: {value: voice}}) => {
+                msg.voice = getNewVoice(getVoices(speech), voice);
+                speak(msg, speech);
+                return msg;
+            }
+            const onSpeechReady = node => ({target: speech}) => {
+                node.innerHTML = generateVoiceOptions(speech);
+                return node;
+            }
+            const onOptionChange = msg => ({currentTarget: option}) => {
+                const {name, value} = option;
+                msg[name] = value;
+                speak(msg, speech);
+                return msg;
+            }
+            const onPlay = e => speak(msg, speech);
+            const onStop = e => stopSpeech(speech);
+
+            // Event listeners
+
+            // speechSynthesis is available on the global window scope
+            // we need to wait until speechSynthesis is loaded on 'voiceschanged'
+            // so we can get the built in voices from speechSynthesis 
+            speechSynthesis.addEventListener('voiceschanged', onSpeechReady(voicesDropdown));
+            voicesDropdown.addEventListener('change', onVoiceChange(msg));
+            options.forEach(option => option.addEventListener('change', onOptionChange(msg)));
+            speakButton.addEventListener('click', onPlay);
+            stopButton.addEventListener('click', onStop);
+        }
+
+        voiceinator(document.querySelector('.voiceinator'));
+
+    </script>
+
+</body>
+
+</html>

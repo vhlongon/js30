@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Mouse Shadow</title>
+</head>
+<body>
+
+  <div class="hero">
+     <h1 class="text">Shadow!</h1>
+  </div>
+
+  <style>
+  html {
+    color:black;
+    font-family: sans-serif;
+  }
+  .hero {
+    min-height: 100vh;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    color:black;
+  }
+  h1 {
+    text-shadow: 10px 10px 0 rgba(255,0,255,1);
+    font-size: 100px;
+  }
+  </style>
+
+<script>
+    const hero = document.querySelector('.hero');
+    const text = document.querySelector('.text');
+
+    const calcShadowCoordinates = (node, e) => {
+        const progression = 100;
+        // const width = hero.offsetWidth;
+        // const height = hero.offsetHeight;
+        //same as:
+        const {offsetWidth: width, offsetHeight: height} = node;
+
+        const {offsetX, offsetY, target: {offsetLeft, offsetTop}, target } = e;
+        const notSelf = node  !== target;
+
+        // just takes into account if we are not moving over the here itself, 
+        // in that case we need to normalize the coordinatiates and add the offset for 
+        // actual target. In this case is the h1 inside the hero that might trigger the event
+        const [x, y] = [notSelf ? offsetX + offsetLeft : offsetX, notSelf ? offsetY + offsetTop : offsetY ] 
+
+        // normalize the offset base on our progression so 
+        // if 100 all the top value should be -50 and in the center should be 0
+        const coords = {
+            x:  Math.round(x / width * progression) - (progression / 2),
+            y: Math.round(y / height * progression) - (progression / 2)
+        };
+
+        return coords;
+    }
+
+    const setShadow = ({x,y}, color = 'rgba(255,0,255,1)', blur = 0) => `${x}px ${y}px ${blur} ${color}`;
+    
+    const onMove = (node, target) => e => target.style.textShadow = (setShadow(calcShadowCoordinates(node, e)));
+
+    hero.addEventListener('mousemove', onMove(hero, text))
+</script>
+</body>
+</html>

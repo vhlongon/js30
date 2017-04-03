@@ -1,0 +1,46 @@
+body, html {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    overflow-x: hidden;
+}
+
+body {
+    background: url('bg.jpg');
+    background-size: cover;
+}
+
+.keys {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+}
+.key {
+    border: 5px solid black;
+    background: rgba(0,0,0,0.5);
+    color: white;
+    letter-spacing: 0.02em;
+    padding: 1em;
+    margin: .25em;
+    width: calc(2em - 0.25em);
+    height: 4em;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    transition: all .07s;
+}
+
+.key__letter {
+    font-family: serif;
+    font-size: 2em;
+    color: gold;
+}
+
+.key.playing {
+    border-color: gold;
+    transform: scale(1.2);
+}

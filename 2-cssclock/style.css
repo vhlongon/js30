@@ -1,0 +1,79 @@
+html, body {
+    width: 100%;
+    height: 100%;
+    
+}
+
+body {
+    background: linear-gradient(135deg, #1E5799 0%,#7DB9E8 100%); 
+    background-size: cover;
+    overflow-x: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.clock {
+    border: 20px solid white;
+    border-radius: 50%;
+    width: 22.5em;
+    height: 22.5em;
+    visibility: hidden;
+    opacity: 0;
+    transition: all 1s;
+}
+
+.clock.is-visible {
+    visibility: visible;
+    opacity: 1;
+}
+
+.clock__face {
+    height: 100%;
+    width: 100%;
+    position: relative;
+    transform: translateY(-3px); /* account for the height of the clock hands */
+}
+
+.clock__center {
+    text-align: center;
+    position: absolute;
+    top: 50%;
+    width: 100%;
+}
+
+.clock__center:after {
+    content: '';
+    display: inline-block;
+    border-radius: 50%;
+    background: black;
+    width: 1.5em;
+    height: 1.5em;
+    position: relative;
+    top: -0.75em;
+}
+
+.hand {
+    width: 50%;
+    background: black;
+    position: absolute;
+    top: 50%;
+    transform-origin: 100%;
+    transform: rotate(90deg);
+    transition-duration: 0.3s;
+    transition-timing-function: cubic-bezier(0.1, 2.7, 0.58, 1);
+}
+
+.hand--hour {
+    height: 6px;
+    /*width: 25%;*/
+}
+
+.hand--min {
+    height: 4px;
+    /*width: 40%;*/
+}
+
+.hand--sec {
+    /*width: 3em;*/
+    height: 2px;
+}
