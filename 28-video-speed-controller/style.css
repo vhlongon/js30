@@ -1,0 +1,50 @@
+body {
+    margin: 0;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color:#556;
+    background-image: linear-gradient(30deg, #445 12%, transparent 12.5%, transparent 87%, #445 87.5%, #445),
+    linear-gradient(150deg, #445 12%, transparent 12.5%, transparent 87%, #445 87.5%, #445),
+    linear-gradient(30deg, #445 12%, transparent 12.5%, transparent 87%, #445 87.5%, #445),
+    linear-gradient(150deg, #445 12%, transparent 12.5%, transparent 87%, #445 87.5%, #445),
+    linear-gradient(60deg, #99a 25%, transparent 25.5%, transparent 75%, #99a 75%, #99a), 
+    linear-gradient(60deg, #99a 25%, transparent 25.5%, transparent 75%, #99a 75%, #99a);
+    background-size:80px 140px;
+    background-position: 0 0, 0 0, 40px 70px, 40px 70px, 0 0, 40px 70px;
+    font-family: sans-serif;
+}
+.wrapper {
+    width:850px;
+    max-width: 100%;
+    padding: 0 20px;
+    display:flex;
+}
+
+video {
+    box-shadow:0 0 1px 3px rgba(0,0,0,0.1);
+    max-width: 100%;
+}
+
+.speed {
+    background:#efefef;
+    flex:1;
+    display:flex;
+    align-items:flex-start;
+    margin: 0 10px;
+    border-radius:20px;
+    box-shadow:0 0 1px 3px rgba(0,0,0,0.1);
+    overflow: hidden;
+}
+.speed-bar {
+    width:100%;
+    background:linear-gradient(-170deg, gold 0%, darkgoldenrod 100%);
+    text-shadow:1px 1px 0 rgba(0,0,0,0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 2px;
+    color:white;
+    height:10%;
+}

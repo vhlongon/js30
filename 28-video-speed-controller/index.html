@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Video Speed Scrubber</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div class="wrapper">
+    <video class="flex" width="765" height="430" src="http://clips.vorwaerts-gmbh.de/VfE_html5.mp4" loop controls></video>
+    <div class="speed">
+      <div class="speed-bar">1×</div>
+    </div>
+  </div>
+
+<script>
+    const speed = document.querySelector('.speed');
+    const bar = document.querySelector('.speed-bar');
+    const video = document.querySelector('.flex');
+
+    const calculateSpeed = ({pageY, currentTarget}) => {
+        // get the current vertical position when scrolling on the bar 
+        // (taking into account possible offset for the bar location)
+        const {offsetTop, offsetHeight} = currentTarget;
+        const y = pageY - offsetTop;
+        // make it into a percentage
+        const percent = y / offsetHeight;
+        // set min and max values
+        const [min, max] = [0.5, 3];
+        // round the decimal percent value to get a whole percentage
+        const height = Math.round(percent * 100) + '%';
+        // this makes sure that the max and min percentage of the play back will be resp. 0.5 and 3,
+        const playbackRate = percent * (max - min) + min;
+
+        return {
+            height,
+            playbackRate
+        };
+    }
+
+    const onMousemove = (bar, video) => ({pageY, currentTarget}) => {
+        const {height, playbackRate} = calculateSpeed({pageY, currentTarget});
+        let {style, textContent} = bar;
+        bar.style.height = height;
+        bar.textContent = playbackRate.toFixed(2) + 'x';
+        video.playbackRate = playbackRate;
+    }
+
+    speed.addEventListener('mousemove', onMousemove(bar, video));
+
+</script>
+</body>
+</html>
